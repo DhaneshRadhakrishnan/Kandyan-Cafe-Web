@@ -1,0 +1,20 @@
+
+    .capsule {
+      border-radius: 999px !important;
+    }
+
+    .form-control, .form-select {
+      background-color: #fff;
+      color: #000;
+      border-radius: 999px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.2);
+    }
+
+    .btn-capsule {
+      border-radius: 999px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }

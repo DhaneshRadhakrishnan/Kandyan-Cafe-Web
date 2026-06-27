@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#1a1a1a',
+                        light: '#f5f5f5',
+                        accent: '#333333',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .status-pending {
+            background-color: #f59e0b;
+        }
+
+        .status-preparing {
+            background-color: #3b82f6;
+        }
+
+        .status-ready {
+            background-color: #10b981;
+        }
+
+        .status-delivered {
+            background-color: #6b7280;
+        }
+
+        .status-cancelled {
+            background-color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="bg-light text-dark min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="admin-navbar"></div>
+
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Order Management</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search orders..."
+                            class="pl-10 pr-4 py-2 border rounded-lg w-64">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="p-6">
+                <!-- Filters -->
+                <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-dark text-light rounded-lg">All</button>
+                            <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">Today</button>
+                            <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">This Week</button>
+                            <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">This Month</button>
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <select class="px-4 py-2 border rounded-lg">
+                                <option>All Status</option>
+                                <option>Pending</option>
+                                <option>Preparing</option>
+                                <option>Ready</option>
+                                <option>Delivered</option>
+                                <option>Cancelled</option>
+                            </select>
+                            <select class="px-4 py-2 border rounded-lg">
+                                <option>All Delivery</option>
+                                <option>Pickup</option>
+                                <option>Delivery</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Table -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto overflow-y-auto" style="max-height: 70vh;">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Order ID</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Customer</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Items</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Total</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Delivery</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Time</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="ordersTable">
+                                <!-- Orders will be populated here by JavaScript -->
+                            </tbody>
+                            <style>
+                                thead,
+                                tbody tr {
+                                    display: table;
+                                    width: 100%;
+                                    table-layout: fixed;
+                                }
+
+                                thead {
+                                    width: calc(100% - 17px);
+                                    position: sticky;
+                                    top: 0;
+                                    background-color: #f9fafb;
+                                    z-index: 10;
+                                }
+
+                                tbody {
+                                    display: block;
+                                    overflow-y: auto;
+                                    max-height: calc(70vh - 48px);
+                                }
+                            </style>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex items-center justify-between mt-6 bg-white p-4 rounded-lg shadow-sm">
+                    <div class="text-sm text-gray-700">
+                        Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span
+                            class="font-medium">24</span> orders
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">Previous</button>
+                        <button class="px-4 py-2 border rounded-lg bg-dark text-light">1</button>
+                        <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">2</button>
+                        <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">3</button>
+                        <button class="px-4 py-2 border rounded-lg hover:bg-gray-50">Next</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium" id="modalOrderId">Order #12345</h3>
+                        <p class="text-sm text-gray-500" id="modalOrderTime">Today, 10:30 AM</p>
+                    </div>
+                    <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <h4 class="font-medium mb-4">Order Items</h4>
+                        <div class="space-y-4" id="modalOrderItems">
+                            <!-- Items will be populated here -->
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t">
+                            <h4 class="font-medium mb-4">Order Notes</h4>
+                            <p class="text-sm text-gray-600" id="modalOrderNotes">No extra sugar please. Package
+                                carefully for delivery.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-medium mb-4">Customer Details</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">Name</p>
+                                    <p class="font-medium" id="modalCustomerName">John Doe</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Phone</p>
+                                    <p class="font-medium" id="modalCustomerPhone">+1 (555) 123-4567</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Delivery Address</p>
+                                    <p class="font-medium" id="modalCustomerAddress">123 Main St, Apt 4B, New York, NY
+                                        10001</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t">
+                                <h4 class="font-medium mb-4">Order Summary</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Subtotal</span>
+                                        <span id="modalSubtotal">$24.50</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Delivery Fee</span>
+                                        <span id="modalDeliveryFee">$2.50</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Tax</span>
+                                        <span id="modalTax">$2.20</span>
+                                    </div>
+                                    <div class="flex justify-between font-medium pt-2 border-t">
+                                        <span>Total</span>
+                                        <span id="modalTotal">$29.20</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t">
+                                <h4 class="font-medium mb-4">Update Order</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                        <select id="modalStatus" class="w-full border rounded-lg p-2">
+                                            <option value="pending">Pending</option>
+                                            <option value="preparing">Preparing</option>
+                                            <option value="ready">Ready</option>
+                                            <option value="delivered">Delivered</option>
+                                            <option value="cancelled">Cancelled</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Delivery
+                                            Method</label>
+                                        <select id="modalDeliveryMethod" class="w-full border rounded-lg p-2">
+                                            <option value="pickup">Pickup</option>
+                                            <option value="delivery">Delivery</option>
+                                        </select>
+                                    </div>
+                                    <button id="updateOrder"
+                                        class="w-full bg-dark text-light py-2 rounded-lg hover:bg-accent">
+                                        Update Order
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample order data
+        const orders = [
+            {
+                id: 'CAFE-1001',
+                customer: 'John Smith',
+                items: [
+                    { name: 'Cappuccino', quantity: 2, price: 4.50 },
+                    { name: 'Croissant', quantity: 1, price: 3.00 }
+                ],
+                total: 12.00,
+                delivery: 'Pickup',
+                status: 'pending',
+                time: '10:30 AM',
+                date: 'Today',
+                notes: 'Extra hot cappuccino please',
+                customerDetails: {
+                    name: 'John Smith',
+                    phone: '+1 (555) 987-6543',
+                    address: '456 Park Ave, New York, NY 10022'
+                }
+            },
+            {
+                id: 'CAFE-1002',
+                customer: 'Emily Johnson',
+                items: [
+                    { name: 'Latte', quantity: 1, price: 4.00 },
+                    { name: 'Blueberry Muffin', quantity: 1, price: 3.50 },
+                    { name: 'Iced Tea', quantity: 1, price: 3.00 }
+                ],
+                total: 10.50,
+                delivery: 'Delivery',
+                status: 'preparing',
+                time: '11:15 AM',
+                date: 'Today',
+                notes: 'Please ring the bell twice',
+                customerDetails: {
+                    name: 'Emily Johnson',
+                    phone: '+1 (555) 456-7890',
+                    address: '789 Broadway, Apt 5C, New York, NY 10003'
+                }
+            },
+            {
+                id: 'CAFE-1003',
+                customer: 'Michael Brown',
+                items: [
+                    { name: 'Espresso', quantity: 1, price: 3.00 },
+                    { name: 'Chocolate Chip Cookie', quantity: 2, price: 2.50 }
+                ],
+                total: 8.00,
+                delivery: 'Pickup',
+                status: 'ready',
+                time: '9:45 AM',
+                date: 'Today',
+                notes: 'No notes',
+                customerDetails: {
+                    name: 'Michael Brown',
+                    phone: '+1 (555) 789-0123',
+                    address: '321 5th Ave, New York, NY 10016'
+                }
+            },
+            {
+                id: 'CAFE-1004',
+                customer: 'Sarah Williams',
+                items: [
+                    { name: 'Flat White', quantity: 1, price: 4.50 },
+                    { name: 'Avocado Toast', quantity: 1, price: 7.50 }
+                ],
+                total: 12.00,
+                delivery: 'Delivery',
+                status: 'delivered',
+                time: 'Yesterday, 2:30 PM',
+                date: 'Yesterday',
+                notes: 'Extra avocado on the toast',
+                customerDetails: {
+                    name: 'Sarah Williams',
+                    phone: '+1 (555) 234-5678',
+                    address: '159 3rd St, Brooklyn, NY 11231'
+                }
+            },
+            {
+                id: 'CAFE-1005',
+                customer: 'David Lee',
+                items: [
+                    { name: 'Cold Brew', quantity: 1, price: 4.50 },
+                    { name: 'Bagel with Cream Cheese', quantity: 1, price: 4.00 },
+                    { name: 'Fruit Cup', quantity: 1, price: 5.00 }
+                ],
+                total: 13.50,
+                delivery: 'Pickup',
+                status: 'cancelled',
+                time: 'Yesterday, 8:15 AM',
+                date: 'Yesterday',
+                notes: 'No onions on the bagel',
+                customerDetails: {
+                    name: 'David Lee',
+                    phone: '+1 (555) 345-6789',
+                    address: '753 2nd Ave, New York, NY 10017'
+                }
+            }
+        ];
+
+        // Populate orders table
+        const ordersTable = document.getElementById('ordersTable');
+
+        function renderOrders() {
+            ordersTable.innerHTML = '';
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+
+                // Calculate item count
+                const itemCount = order.items.reduce((total, item) => total + item.quantity, 0);
+
+                // Format status badge
+                let statusClass = '';
+                switch (order.status) {
+                    case 'pending': statusClass = 'status-pending'; break;
+                    case 'preparing': statusClass = 'status-preparing'; break;
+                    case 'ready': statusClass = 'status-ready'; break;
+                    case 'delivered': statusClass = 'status-delivered'; break;
+                    case 'cancelled': statusClass = 'status-cancelled'; break;
+                }
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap font-medium">${order.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${order.customer}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${itemCount} items</td>
+                    <td class="px-6 py-4 whitespace-nowrap">$${order.total.toFixed(2)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs rounded-full ${order.delivery === 'Delivery' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}">
+                            ${order.delivery}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs rounded-full text-white ${statusClass}">
+                            ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.date}, ${order.time}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-dark hover:text-accent mr-2 view-order" data-id="${order.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="text-dark hover:text-accent edit-order" data-id="${order.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+
+                ordersTable.appendChild(row);
+            });
+
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-order').forEach(button => {
+                button.addEventListener('click', function () {
+                    const orderId = this.getAttribute('data-id');
+                    viewOrder(orderId);
+                });
+            });
+
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-order').forEach(button => {
+                button.addEventListener('click', function () {
+                    const orderId = this.getAttribute('data-id');
+                    editOrder(orderId);
+                });
+            });
+        }
+
+        // View order details
+        function viewOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Populate modal with order details
+            document.getElementById('modalOrderId').textContent = `Order ${order.id}`;
+            document.getElementById('modalOrderTime').textContent = `${order.date}, ${order.time}`;
+
+            // Populate items
+            const itemsContainer = document.getElementById('modalOrderItems');
+            itemsContainer.innerHTML = '';
+            order.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'flex justify-between py-2 border-b';
+                itemElement.innerHTML = `
+                    <div>
+                        <p class="font-medium">${item.name}</p>
+                        <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
+                    </div>
+                    <p class="font-medium">$${(item.price * item.quantity).toFixed(2)}</p>
+                `;
+                itemsContainer.appendChild(itemElement);
+            });
+
+            // Populate other details
+            document.getElementById('modalOrderNotes').textContent = order.notes || 'No notes';
+            document.getElementById('modalCustomerName').textContent = order.customerDetails.name;
+            document.getElementById('modalCustomerPhone').textContent = order.customerDetails.phone;
+            document.getElementById('modalCustomerAddress').textContent = order.customerDetails.address;
+
+            // Calculate totals
+            const subtotal = order.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const deliveryFee = order.delivery === 'Delivery' ? 2.50 : 0;
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + deliveryFee + tax;
+
+            document.getElementById('modalSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('modalDeliveryFee').textContent = `$${deliveryFee.toFixed(2)}`;
+            document.getElementById('modalTax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('modalTotal').textContent = `$${total.toFixed(2)}`;
+
+            // Set status and delivery method
+            document.getElementById('modalStatus').value = order.status;
+            document.getElementById('modalDeliveryMethod').value = order.delivery.toLowerCase();
+
+            // Show modal
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        // Edit order
+        function editOrder(orderId) {
+            viewOrder(orderId);
+
+            // Change the update button text
+            document.getElementById('updateOrder').textContent = 'Save Changes';
+        }
+
+        // Update order
+        document.getElementById('updateOrder').addEventListener('click', function () {
+            const orderId = document.getElementById('modalOrderId').textContent.replace('Order ', '');
+            const order = orders.find(o => o.id === orderId);
+
+            if (order) {
+                const newStatus = document.getElementById('modalStatus').value;
+                const newDeliveryMethod = document.getElementById('modalDeliveryMethod').value;
+
+                order.status = newStatus;
+                order.delivery = newDeliveryMethod.charAt(0).toUpperCase() + newDeliveryMethod.slice(1);
+
+                // Re-render orders table
+                renderOrders();
+
+                // Close modal
+                document.getElementById('orderModal').classList.add('hidden');
+
+                // Show success message (you could implement a toast notification here)
+                alert('Order updated successfully!');
+            }
+        });
+
+        // Close modal
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('orderModal').classList.add('hidden');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            renderOrders();
+        });
+    </script>
+</body>
+
+</html>

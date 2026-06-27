@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product | Cafe Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="admin-navbar"></div>
+        <!-- Sidebar -->
+
+        <!-- Main Content -->
+        <div class="main-content flex-1 overflow-auto ml-64">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm py-4 px-6 flex items-center justify-between">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="mobile-menu-btn hidden mr-4 text-gray-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold text-gray-800">Add New Product</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <i class="fas fa-bell text-gray-600 text-xl"></i>
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-envelope text-gray-600 text-xl"></i>
+                        <span
+                            class="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">5</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="p-6">
+                <!-- Back button -->
+                <div class="mb-6">
+                    <a href="admin-product.html" class="text-black hover:text-gray-700 flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Products
+                    </a>
+                </div>
+
+                <!-- Product Form -->
+                <div class="bg-white rounded-lg shadow overflow-hidden p-6 mb-6">
+                    <h2 class="text-lg font-semibold mb-6 border-b pb-2">Product Information</h2>
+
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Left Column -->
+                            <div>
+                                <!-- Product Name -->
+                                <div class="mb-4">
+                                    <label for="product-name"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                                    <input type="text" id="product-name"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black">
+                                </div>
+
+                                <!-- Description -->
+                                <div class="mb-4">
+                                    <label for="product-description"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                    <textarea id="product-description" rows="3"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black"></textarea>
+                                </div>
+
+                                <!-- Category Dropdown -->
+                                <div class="mb-4">
+                                    <label for="product-category"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                    <select id="product-category"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black">
+                                        <option value="">Select a category</option>
+                                        <option value="coffee">Coffee</option>
+                                        <option value="tea">Tea</option>
+                                        <option value="pastry">Pastry</option>
+                                        <option value="sandwich">Sandwich</option>
+                                        <option value="salad">Salad</option>
+                                        <option value="smoothie">Smoothie</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price -->
+                                <div class="mb-4">
+                                    <label for="product-price"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+                                    <input type="number" id="product-price" step="0.01" min="0"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black">
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div>
+
+
+
+                                <!-- Status Dropdown -->
+                                <div class="mb-4">
+                                    <label for="product-status"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <select id="product-status"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Featured -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Featured Product</label>
+                                    <div class="flex items-center space-x-4">
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="featured" value="yes"
+                                                class="form-radio text-black focus:ring-black">
+                                            <span class="ml-2">Yes</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="featured" value="no" checked
+                                                class="form-radio text-black focus:ring-black">
+                                            <span class="ml-2">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Image Upload -->
+                                <div class="mb-4">
+                                    <label for="product-image"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                                    <div class="mt-1 flex items-center">
+                                        <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                                            <svg class="h-full w-full text-gray-300" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
+                                        </span>
+                                        <button type="button"
+                                            class="ml-5 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                                            Change
+                                        </button>
+                                    </div>
+                                    <input type="file" id="product-image" class="sr-only">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="mt-8 pt-5 border-t border-gray-200 flex justify-end space-x-3">
+                            <button type="button"
+                                class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                class="bg-black border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                                Save Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </main>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+
+    <script>
+        // Toggle sidebar on mobile
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-open');
+        });
+
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-open');
+        });
+
+        // Toggle sidebar collapse on desktop
+        const desktopToggleSidebar = () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.toggle('sidebar-collapsed');
+                mainContent.classList.toggle('content-expanded');
+            }
+        }
+    </script>
+</body>
+
+</html>

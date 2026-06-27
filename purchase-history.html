@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew Haven | Purchase History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9f9;
+        }
+        
+        .divider {
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .receipt-item:hover {
+            background-color: #f5f5f5;
+            transition: all 0.2s ease;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+        
+        .completed {
+            background-color: #e6f7ee;
+            color: #10b981;
+        }
+        
+        .cancelled {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .pending {
+            background-color: #fef3c7;
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Purchase History</h1>
+                <p class="text-gray-600">Your orders at Brew Haven</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search orders..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <button class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Orders</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-1">24</h3>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-full">
+                        <i class="fas fa-shopping-bag text-gray-700"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500 text-sm">Monthly Average</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-1">$58.75</h3>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-full">
+                        <i class="fas fa-chart-line text-gray-700"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500 text-sm">Favorite Item</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-1">Flat White</h3>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-full">
+                        <i class="fas fa-coffee text-gray-700"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Purchase History List -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-900">Recent Orders</h2>
+            </div>
+            
+            <!-- Order Items -->
+            <div id="order-history">
+                <!-- Order 1 -->
+                <div class="receipt-item p-6 border-b border-gray-100 hover:cursor-pointer">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center space-x-3">
+                                <h3 class="font-semibold text-gray-900">Order #BH-2023-0456</h3>
+                                <span class="status-badge completed">Completed</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-1">Today, 10:30 AM</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-medium text-gray-900">$14.50</p>
+                            <p class="text-gray-500 text-sm mt-1">2 items</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-coffee text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Flat White</h4>
+                                <p class="text-gray-500 text-sm">Double shot, oat milk</p>
+                                <p class="text-gray-900 text-sm mt-1">$5.50</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 mt-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cookie text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Almond Croissant</h4>
+                                <p class="text-gray-500 text-sm">Extra almond flakes</p>
+                                <p class="text-gray-900 text-sm mt-1">$9.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 divider flex justify-end">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            <i class="fas fa-redo mr-2"></i>Reorder
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Order 2 -->
+                <div class="receipt-item p-6 border-b border-gray-100 hover:cursor-pointer">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center space-x-3">
+                                <h3 class="font-semibold text-gray-900">Order #BH-2023-0455</h3>
+                                <span class="status-badge completed">Completed</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-1">Yesterday, 4:15 PM</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-medium text-gray-900">$8.75</p>
+                            <p class="text-gray-500 text-sm mt-1">1 item</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-mug-hot text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Cappuccino</h4>
+                                <p class="text-gray-500 text-sm">Extra foam, cinnamon</p>
+                                <p class="text-gray-900 text-sm mt-1">$4.75</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 mt-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-bread-slice text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Banana Bread</h4>
+                                <p class="text-gray-500 text-sm">With butter</p>
+                                <p class="text-gray-900 text-sm mt-1">$4.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 divider flex justify-end">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            <i class="fas fa-redo mr-2"></i>Reorder
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Order 3 -->
+                <div class="receipt-item p-6 border-b border-gray-100 hover:cursor-pointer">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center space-x-3">
+                                <h3 class="font-semibold text-gray-900">Order #BH-2023-0454</h3>
+                                <span class="status-badge cancelled">Cancelled</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mt-1">2 days ago, 9:00 AM</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-medium text-gray-900">$12.25</p>
+                            <p class="text-gray-500 text-sm mt-1">3 items</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-coffee text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Iced Latte</h4>
+                                <p class="text-gray-500 text-sm">Vanilla syrup, almond milk</p>
+                                <p class="text-gray-900 text-sm mt-1">$6.50</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 mt-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cookie text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Chocolate Chip Cookie</h4>
+                                <p class="text-gray-500 text-sm">Double chocolate</p>
+                                <p class="text-gray-900 text-sm mt-1">$3.75</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 mt-4">
+                            <div class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-bottle-water text-gray-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Sparkling Water</h4>
+                                <p class="text-gray-500 text-sm">Lime flavor</p>
+                                <p class="text-gray-900 text-sm mt-1">$2.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 divider flex justify-end">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            <i class="fas fa-redo mr-2"></i>Reorder
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="p-6 flex justify-between items-center">
+                <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition disabled:opacity-50" disabled>
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <div class="flex space-x-2">
+                    <button class="w-10 h-10 rounded-lg bg-gray-900 text-white">1</button>
+                    <button class="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-50">2</button>
+                    <button class="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-50">3</button>
+                    <span class="flex items-center px-2">...</span>
+                    <button class="w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-50">8</button>
+                </div>
+                <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                    Next<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Empty State (hidden by default) -->
+        <div id="empty-state" class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+            <div class="max-w-md mx-auto">
+                <div class="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-coffee text-gray-400 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No orders yet</h3>
+                <p class="text-gray-500 mb-6">You haven't placed any orders with us yet. Start your coffee journey today!</p>
+                <button class="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition">
+                    <i class="fas fa-mug-hot mr-2"></i>Order Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // This would be replaced with actual data fetching in a real application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example of how you might toggle the empty state
+            // const orderHistory = document.getElementById('order-history');
+            // const emptyState = document.getElementById('empty-state');
+            // 
+            // if (orderHistory.children.length === 0) {
+            //     orderHistory.classList.add('hidden');
+            //     emptyState.classList.remove('hidden');
+            // }
+            
+            // Add click handlers for order items
+            const receiptItems = document.querySelectorAll('.receipt-item');
+            receiptItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // In a real app, this would navigate to order details
+                    console.log('Order clicked:', this.querySelector('h3').textContent);
+                });
+            });
+            
+            // Filter button functionality
+            const filterButton = document.querySelector('button:has(.fa-filter)');
+            filterButton.addEventListener('click', function() {
+                // In a real app, this would open a filter modal
+                console.log('Filter button clicked');
+            });
+        });
+    </script>
+</body>
+</html>

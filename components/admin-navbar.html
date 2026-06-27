@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/admin-products.css">
+   
+</head>
+<body>
+        <!-- Sidebar -->
+        <div class="sidebar bg-black text-white h-full fixed md:relative flex flex-col w-64">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-700 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-coffee text-2xl mr-3 text-white"></i>
+                    <span class="nav-text font-bold text-xl">Cafe Admin</span>
+                </div>
+                <button id="toggleSidebar" class="md:hidden text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="flex-1 overflow-y-auto">
+                <ul class="py-4">
+                    <li class="px-4 py-3 hover:bg-gray-800 cursor-pointer flex items-center">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </li>
+                    <li class="px-4 py-3 bg-gray-800 cursor-pointer flex items-center">
+                        <i class="fas fa-utensils mr-3"></i>
+                        <span class="nav-text">Products</span>
+                    </li>
+                    <li class="px-4 py-3 hover:bg-gray-800 cursor-pointer flex items-center">
+                        <i class="fas fa-users mr-3"></i>
+                        <span class="nav-text">Users</span>
+                    </li>
+                    <li class="px-4 py-3 hover:bg-gray-800 cursor-pointer flex items-center">
+                        <i class="fas fa-chart-line mr-3"></i>
+                        <span class="nav-text">Analytics</span>
+                    </li>
+                    <li class="px-4 py-3 hover:bg-gray-800 cursor-pointer flex items-center">
+                        <i class="fas fa-receipt mr-3"></i>
+                        <span class="nav-text">Orders</span>
+                    </li>
+                    <li class="px-4 py-3 hover:bg-gray-800 cursor-pointer flex items-center">
+                        <i class="fas fa-cog mr-3"></i>
+                        <span class="nav-text">Settings</span>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- User Profile -->
+            <div class="p-4 border-t border-gray-700 flex items-center">
+                <img src="https://via.placeholder.com/40" alt="User" class="rounded-full w-10 h-10">
+                <div class="ml-3 nav-text">
+                    <div class="font-medium">Admin User</div>
+                    <div class="text-xs text-gray-400">admin@cafe.com</div>
+                </div>
+            </div>
+        </div>
+                <!-- Sidebar -->
+
+ 
+
+    <script>
+        // Toggle sidebar on mobile
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-open');
+        });
+        
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-open');
+        });
+        
+        // Toggle sidebar collapse on desktop
+        const desktopToggleSidebar = () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.toggle('sidebar-collapsed');
+                mainContent.classList.toggle('content-expanded');
+            }
+        }
+        
+        // Simulate chart data
+        function initCharts() {
+            // This would be replaced with actual chart library in a real implementation
+            console.log("Initializing charts...");
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+        });
+    </script>
+</body>
+</html>
